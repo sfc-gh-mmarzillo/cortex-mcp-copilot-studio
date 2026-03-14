@@ -7,6 +7,15 @@ description: "Expose a Cortex Agent to Microsoft Copilot Studio via Snowflake Ma
 
 Exposes an existing Snowflake Cortex Agent to Microsoft Copilot Studio via Snowflake Managed MCP (Model Context Protocol).
 
+## When to Use
+
+Use this skill when someone asks:
+- "How do I connect my Cortex Agent to Copilot Studio?"
+- "Set up MCP for Microsoft Copilot"
+- "Expose my agent to Copilot Studio"
+- "Integrate Snowflake with MS 365"
+- "Enable OAuth for Copilot Studio MCP"
+
 ## Prerequisites
 
 - An existing Cortex Agent in Snowflake
