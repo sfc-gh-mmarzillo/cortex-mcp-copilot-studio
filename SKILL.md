@@ -38,10 +38,11 @@ SHOW AGENTS IN ACCOUNT;
 - `<DATABASE>` - Database name
 - `<SCHEMA>` - Schema name
 - `<AGENT>` - Agent name
-- `<ACCOUNT>` - Account identifier
+- `<ACCOUNT>` - Account identifier (e.g., `ORGNAME-ACCOUNT_NAME`)
+- `<ACCOUNT_URL>` - Account identifier formatted for URLs: **lowercase, with underscores replaced by hyphens** (e.g., `ORGNAME-ACCOUNT_NAME` becomes `orgname-account-name`). This is required because Snowflake URLs use hyphens, not underscores.
 - `<WAREHOUSE>` - Warehouse name
 
-**Stop**: Confirm all values before proceeding.
+**Stop**: Confirm all values before proceeding. Explicitly confirm the `<ACCOUNT_URL>` format with the user.
 
 ---
 
@@ -161,16 +162,16 @@ COPILOT STUDIO CONFIGURATION
 
    Server name:        <any descriptive name>
    Server description: <any description>
-   Server URL:         https://<ACCOUNT>.snowflakecomputing.com/api/v2/databases/<DATABASE>/schemas/<SCHEMA>/mcp-servers/<AGENT>_MCP_SERVER
+   Server URL:         https://<ACCOUNT_URL>.snowflakecomputing.com/api/v2/databases/<DATABASE>/schemas/<SCHEMA>/mcp-servers/<AGENT>_MCP_SERVER
    
    Authentication:     OAuth 2.0
    Type:               Manual
    
    Client ID:          <OAUTH_CLIENT_ID from Step 5>
    Client secret:      <OAUTH_CLIENT_SECRET from Step 5>
-   Authorization URL:  https://<ACCOUNT>.snowflakecomputing.com/oauth/authorize
-   Token URL template: https://<ACCOUNT>.snowflakecomputing.com/oauth/token-request
-   Refresh URL:        https://<ACCOUNT>.snowflakecomputing.com/oauth/token-request
+   Authorization URL:  https://<ACCOUNT_URL>.snowflakecomputing.com/oauth/authorize
+   Token URL template: https://<ACCOUNT_URL>.snowflakecomputing.com/oauth/token-request
+   Refresh URL:        https://<ACCOUNT_URL>.snowflakecomputing.com/oauth/token-request
    Scopes:             session:role:PUBLIC
    Redirect URL:       (leave as auto-generate)
 
@@ -245,9 +246,9 @@ The agent should respond using your Snowflake Cortex Agent.
 
 | URL | Value |
 |-----|-------|
-| Server URL | `https://<ACCOUNT>.snowflakecomputing.com/api/v2/databases/<DATABASE>/schemas/<SCHEMA>/mcp-servers/<AGENT>_MCP_SERVER` |
-| Authorization URL | `https://<ACCOUNT>.snowflakecomputing.com/oauth/authorize` |
-| Token URL | `https://<ACCOUNT>.snowflakecomputing.com/oauth/token-request` |
+| Server URL | `https://<ACCOUNT_URL>.snowflakecomputing.com/api/v2/databases/<DATABASE>/schemas/<SCHEMA>/mcp-servers/<AGENT>_MCP_SERVER` |
+| Authorization URL | `https://<ACCOUNT_URL>.snowflakecomputing.com/oauth/authorize` |
+| Token URL | `https://<ACCOUNT_URL>.snowflakecomputing.com/oauth/token-request` |
 
 ### Scopes
 
@@ -263,6 +264,10 @@ The agent should respond using your Snowflake Cortex Agent.
 ### "Object does not exist" in Copilot Studio
 - Verify MCP server exists: `SHOW MCP SERVERS IN SCHEMA <DATABASE>.<SCHEMA>;`
 - Check grants were applied: `SHOW GRANTS ON MCP SERVER <DATABASE>.<SCHEMA>.<AGENT>_MCP_SERVER;`
+
+### URL connection failures / "Invalid account" errors
+- Snowflake account URLs require **hyphens**, not underscores. If your account identifier contains underscores (e.g., `ORGNAME-ACCOUNT_NAME`), replace them with hyphens in all URLs (e.g., `orgname-account-name.snowflakecomputing.com`).
+- Use lowercase for the account identifier in URLs.
 
 ### OAuth errors
 - Verify redirect URL matches exactly: `DESCRIBE SECURITY INTEGRATION <AGENT>_COPILOT_OAUTH;`
